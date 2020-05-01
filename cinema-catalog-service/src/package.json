@@ -10,7 +10,7 @@
   "author": "RenatoLourenco",
   "license": "ISC",
   "dependencies": {
-    "dotenv-safe": "^8.1.0",
+    "dotenv-safe": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.21.0",
     "mongodb": "^3.3.2",
@@ -19,5 +19,16 @@
     "tap-spec": "^5.0.0",
     "tape": "^4.11.0",
     "u": "^0.1.0"
-  }
+  },
+  "devDependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abuzitos/cinema-microservice.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abuzitos/cinema-microservice/issues"
+  },
+  "homepage": "https://github.com/abuzitos/cinema-microservice#readme",
+  "description": ""
 }

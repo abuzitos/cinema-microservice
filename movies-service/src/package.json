@@ -1,7 +1,7 @@
 {
   "name": "movies-service",
   "version": "1.0.0",
-  "description": "",
+  "description": "Service to provide detailed movies info.",
   "main": "index.js",
   "scripts": {
     "start": "node index",
@@ -17,6 +17,18 @@
     "morgan": "^1.9.1",
     "supertest": "^4.0.2",
     "tap-spec": "^5.0.0",
-    "tape": "^4.11.0"
-  }
+    "tape": "^4.11.0",
+    "u": "^0.1.0"
+  },
+  "devDependencies": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abuzitos/cinema-microservice.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abuzitos/cinema-microservice/issues"
+  },
+  "homepage": "https://github.com/abuzitos/cinema-microservice#readme",
+  "description": ""
 }
