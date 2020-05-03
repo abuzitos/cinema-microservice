@@ -7,4 +7,7 @@ const repository = require('./repository/repository');
 
 server.start(cinemaCatalog, repository, (err, app) => {
     console.log('Just started');
+    console.log(process.env.MONGO_CONNECTION);
+    console.log(process.env.DATABASE_NAME);
+    console.log(process.env.PORT);
 });

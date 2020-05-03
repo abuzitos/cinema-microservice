@@ -1,0 +1,20 @@
+version: "3"
+services:
+  cinema:
+    container_name: cinema
+    restart: always
+    build:
+      context: ./cinema-catalog-service/src/.
+    ports:
+      - "3001:3001"
+    links:
+      - mongodb
+    environment:
+      - MONGO_CONNECTION=mongodb://mongodb:27017
+      - DATABASE_NAME=cinema-catalog-service
+      - PORT=3001
+  mongodb:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
