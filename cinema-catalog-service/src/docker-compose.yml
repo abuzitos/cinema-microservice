@@ -3,8 +3,7 @@ services:
   cinema:
     container_name: cinema
     restart: always
-    build:
-      context: ./cinema-catalog-service/src/.
+    build: .
     ports:
       - "3001:3001"
     links:
