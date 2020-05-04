@@ -4,10 +4,8 @@ pipeline {
         timeout(time: 60, unit: 'MINUTES')
     }
     agent {
-      //node {
-      //  label 'image-registry.openshift-image-registry.svc:5000/abu-common/node'
-      docker {
-        image 'image-registry.openshift-image-registry.svc:5000/cinema-catalog-service/node'
+      node {
+        label 'nodejs'
       }
     }
 
