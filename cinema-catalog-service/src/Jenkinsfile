@@ -5,7 +5,7 @@ pipeline {
     }
     agent {
       node {
-        image 'image-registry.openshift-image-registry.svc:5000/abu-common/node'
+        label 'image-registry.openshift-image-registry.svc:5000/abu-common/node'
       }
     }
 
