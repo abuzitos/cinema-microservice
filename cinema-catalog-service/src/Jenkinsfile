@@ -11,7 +11,7 @@ pipeline {
 
     environment {
         DEV_PROJECT = "cinema-catalog-service"
-        //STAGE_PROJECT = "abu00-books-stage"
+        STAGE_PROJECT = "cinema-catalog-service-stage"
         APP_GIT_URL = "https://github.com/abuzitos/cinema-microservice"
         //NEXUS_SERVER = "http://nexus-common.apps.cluster.domain.example.com/repository/nodejs"
 
@@ -102,43 +102,43 @@ pipeline {
                 }
             }
 
-            //stage('Deploy to Staging Env') {
-            //    steps {
-            //        echo '### Cleaning existing resources in Staging ###'
-            //        sh '''
-            //                oc project ${STAGE_PROJECT}
-            //                oc delete all -l app=${APP_NAME}
-            //                sleep 5
-            //           '''
+            stage('Deploy to Staging Env') {
+                steps {
+                    echo '### Cleaning existing resources in Staging ###'
+                    sh '''
+                            oc project ${STAGE_PROJECT}
+                            oc delete all -l app=${APP_NAME}
+                            sleep 5
+                       '''
 
-            //        echo '### Creating a new app in Staging ###'
-            //        sh '''
-            //                oc project ${STAGE_PROJECT}
-            //                oc new-app --name books -i books:stage
-            //                oc expose svc/${APP_NAME}
-            //           '''
-            //    }
-            //}
+                    echo '### Creating a new app in Staging ###'
+                    sh '''
+                            oc project ${STAGE_PROJECT}
+                            oc new-app --name books -i books:stage
+                            oc expose svc/${APP_NAME}
+                       '''
+                }
+            }
 
 
-            //stage('Wait for deployment in Staging') {
-            //    steps {
-            //        sh "oc get route ${APP_NAME} -n ${STAGE_PROJECT} -o jsonpath='{ .spec.host }' --loglevel=4 > routehost"
+            stage('Wait for deployment in Staging') {
+                steps {
+                    sh "oc get route ${APP_NAME} -n ${STAGE_PROJECT} -o jsonpath='{ .spec.host }' --loglevel=4 > routehost"
 
-            //        script {
-            //            routeHost = readFile('routehost').trim()
+                    script {
+                        routeHost = readFile('routehost').trim()
 
-            //            openshift.withCluster() {
-            //                openshift.withProject( "${STAGE_PROJECT}" ) {
-            //                    def deployment = openshift.selector("dc", "${APP_NAME}").rollout()
-            //                    openshift.selector("dc", "${APP_NAME}").related('pods').untilEach(1) {
-            //                        return (it.object().status.phase == "Running")
-            //                    }
-            //                }
-            //                echo "Deployment to Staging env is complete. Access the app at the URL http://${routeHost}."
-            //            }
-            //        }
-            //    }
-            //}
+                        openshift.withCluster() {
+                            openshift.withProject( "${STAGE_PROJECT}" ) {
+                                def deployment = openshift.selector("dc", "${APP_NAME}").rollout()
+                                openshift.selector("dc", "${APP_NAME}").related('pods').untilEach(1) {
+                                    return (it.object().status.phase == "Running")
+                                }
+                            }
+                            echo "Deployment to Staging env is complete. Access the app at the URL http://${routeHost}."
+                        }
+                    }
+                }
+            }
     }
 }
