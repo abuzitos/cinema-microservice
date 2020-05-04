@@ -7,7 +7,7 @@ pipeline {
       //node {
       //  label 'image-registry.openshift-image-registry.svc:5000/abu-common/node'
       node {
-        image 'image-registry.openshift-image-registry.svc:5000/cinema-catalog-service/node'
+        label 'image-registry.openshift-image-registry.svc:5000/cinema-catalog-service/node'
       }
     }
 
