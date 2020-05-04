@@ -1,0 +1,23 @@
+{
+    "kind": "BuildConfig",
+    "apiVersion": "build.openshift.io/v1",
+    "metadata": {
+        "name": "custom-pipeline"
+    },
+    "spec": {
+        "source": {
+            "type": "Git",
+            "git": {
+                "uri": "https://github.com/abuzitos/cinema-microservice.git",
+                "ref": "custom-pipeline"
+            },
+            "contextDir": "movies-service/src"
+        },
+        "strategy": {
+            "type": "JenkinsPipeline",
+            "jenkinsPipelineStrategy": {
+                "jenkinsfilePath": "Jenkinsfile"
+            }
+        }
+    }
+}
