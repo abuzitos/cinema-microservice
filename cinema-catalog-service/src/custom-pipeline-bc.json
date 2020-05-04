@@ -9,7 +9,7 @@
             "type": "Git",
             "git": {
                 "uri": "https://github.com/abuzitos/cinema-microservice.git",
-                "ref": "custom-pipeline"
+                "ref": "master"
             },
             "contextDir": "movies-service/src"
         },
