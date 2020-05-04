@@ -3,15 +3,11 @@ pipeline {
         // set a timeout of 60 minutes for this pipeline
         timeout(time: 60, unit: 'MINUTES')
     }
-    //agent {
-    //  node {
-    //    label 'nodejs'
-    //  }
-    //}
-
-    agent any
-
-    tools {node "node"}
+    agent {
+      node {
+        image 'image-registry.openshift-image-registry.svc:5000/abu-common/node'
+      }
+    }
 
     environment {
         DEV_PROJECT = "cinema-catalog-service"
