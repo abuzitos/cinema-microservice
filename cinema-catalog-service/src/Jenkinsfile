@@ -17,6 +17,11 @@ pipeline {
 
         // DO NOT CHANGE THE GLOBAL VARS BELOW THIS LINE
         APP_NAME = "cinema"
+
+        MONGO_CONNECTION=mongodb://mongo:27017
+        DATABASE_NAME=cinema-catalog-service
+        PORT=3001
+
     }
 
     stages {
