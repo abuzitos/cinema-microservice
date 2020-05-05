@@ -13,7 +13,7 @@ pipeline {
         DEV_PROJECT = "cinema-dev"
         STAGE_PROJECT = "cinema-stage"
         APP_GIT_URL = "https://github.com/abuzitos/cinema-microservice"
-        NEXUS_SERVER = "https://registry.npmjs.org/"
+        NEXUS_SERVER = "http://nexus-common.apps.cluster.domain.example.com/repository/nodejs"
 
         // DO NOT CHANGE THE GLOBAL VARS BELOW THIS LINE
         APP_NAME = "cinema"
