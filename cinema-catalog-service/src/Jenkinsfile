@@ -10,8 +10,8 @@ pipeline {
     }
 
     environment {
-        DEV_PROJECT = "cinema-catalog-service"
-        STAGE_PROJECT = "cinema-catalog-service-stage"
+        DEV_PROJECT = "cinema-dev"
+        STAGE_PROJECT = "cinema-stage"
         APP_GIT_URL = "https://github.com/abuzitos/cinema-microservice"
         //NEXUS_SERVER = "http://nexus-common.apps.cluster.domain.example.com/repository/nodejs"
 
