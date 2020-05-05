@@ -3,3 +3,7 @@ require('./config/mongodb.test').runTests();
 require('./server/server.test').runTests();
 require('./repository/repository.test').runTests();
 require('./api/cinema-catalog.test').runTests();
+
+setTimeout((function() {
+    return process.exit(0);
+}), 5000);
