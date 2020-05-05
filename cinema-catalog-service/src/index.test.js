@@ -1,4 +1,5 @@
-require('dotenv-safe').config();
+require('dotenv-safe').load();
+//require('dotenv-safe').config();
 require('./config/mongodb.test').runTests();
 require('./server/server.test').runTests();
 require('./repository/repository.test').runTests();
