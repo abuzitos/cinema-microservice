@@ -64,6 +64,7 @@ pipeline {
                     sh '''
                             oc project ${DEV_PROJECT}
                             oc new-app --name ${APP_NAME} https://github.com/abuzitos/cinema-microservice --strategy=docker --context-dir cinema-catalog-service/src
+                            oc set env dc/${APP_NAME} --from configmap/my${APP_NAME}conf
                             oc expose svc/${APP_NAME}
                        '''
                 }
