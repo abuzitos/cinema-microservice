@@ -18,7 +18,7 @@ pipeline {
         // DO NOT CHANGE THE GLOBAL VARS BELOW THIS LINE
         APP_NAME = "cinema"
 
-        MONGO_CONNECTION = "mongodb://mongo:27017"
+        MONGO_CONNECTION = "mongodb://mongo-cinema-dev.apps.shared.na.openshift.opentlc.com:27017"
         DATABASE_NAME = "cinema-catalog-service"
         PORT = "3001"
 
@@ -128,6 +128,7 @@ pipeline {
                     sh '''
                             oc project ${STAGE_PROJECT}
                             oc new-app --name ${APP_NAME} -i ${APP_NAME}:stage
+                            oc set env dc/${APP_NAME} --from configmap/my${APP_NAME}conf
                             oc expose svc/${APP_NAME}
                        '''
                 }
