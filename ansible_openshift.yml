@@ -1,0 +1,131 @@
+---
+- hosts: webserver
+  connection: local
+
+  tasks:
+  - name: Criar Projeto Common
+    shell: |
+        oc new-project abu-common
+        oc import-image node --confirm --from node
+        oc import-image mongo --confirm --from mongo
+        sleep 10
+
+  - name: Cria a Estrutura de CI-CD / Dev / Stage
+    shell: |
+        oc new-project cinema-ci-cd
+        sleep 5
+        oc new-project cinema-dev
+        sleep 5
+        oc new-project cinema-stage
+        sleep 5
+
+        oc project cinema-ci-cd
+
+        sleep 10
+
+        oc new-app jenkins-ephemeral
+
+        sleep 2m
+
+  - name: Banco de Dados do CI
+    shell: |
+        oc project cinema-ci-cd
+        sleep 10
+
+        oc new-app --name mongo -i abu-common/mongo
+        sleep 2m
+
+        POD=`oc get pods -l app=mongo | grep Running | grep 1/1 | awk '{print $1}'`
+        sleep 10
+
+        oc cp cinema-catalog-service/src/cinemaCatalog.json $POD:/tmp
+        sleep 10
+        oc cp movies-service/src/movies.json $POD:/tmp
+        sleep 10
+
+        oc exec $POD -- bash -c "mongoimport --db cinema-catalog-service --collection cinemaCatalog --file tmp/cinemaCatalog.json"
+        sleep 30
+
+        oc exec $POD -- bash -c "mongoimport --db movie-service --collection movies --file tmp/movies.json"
+        sleep 30
+
+  - name: Banco de Dados do Dev
+    shell: |
+        oc project cinema-dev
+        sleep 10
+
+        oc new-app --name mongo -i abu-common/mongo
+        sleep 2m
+
+        POD=`oc get pods -l app=mongo | grep Running | grep 1/1 | awk '{print $1}'`
+        sleep 10
+
+        oc cp cinema-catalog-service/src/cinemaCatalog.json $POD:/tmp
+        sleep 10
+        oc cp movies-service/src/movies.json $POD:/tmp
+        sleep 10
+
+        oc exec $POD -- bash -c "mongoimport --db cinema-catalog-service --collection cinemaCatalog --file tmp/cinemaCatalog.json"
+        sleep 30
+
+        oc exec $POD -- bash -c "mongoimport --db movie-service --collection movies --file tmp/movies.json"
+        sleep 30
+
+  - name: Banco de Dados do Stage
+    shell: |
+        oc project cinema-stage
+        sleep 10
+
+        oc new-app --name mongo -i abu-common/mongo
+        sleep 2m
+
+        POD=`oc get pods -l app=mongo | grep Running | grep 1/1 | awk '{print $1}'`
+        sleep 10
+
+        oc cp cinema-catalog-service/src/cinemaCatalog.json $POD:/tmp
+        sleep 10
+        oc cp movies-service/src/movies.json $POD:/tmp
+        sleep 10
+
+        oc exec $POD -- bash -c "mongoimport --db cinema-catalog-service --collection cinemaCatalog --file tmp/cinemaCatalog.json"
+        sleep 30
+
+        oc exec $POD -- bash -c "mongoimport --db movie-service --collection movies --file tmp/movies.json"
+        sleep 30
+
+  - name: Variáveis de Ambiente para as Aplicações
+    shell: |
+        oc project cinema-dev
+        sleep 10
+        oc create configmap mycinemaconf --from-literal MONGO_CONNECTION=mongodb://mongo:27017 --from-literal DATABASE_NAME=cinema-catalog-service --from-literal PORT=3001
+        sleep 5
+        oc create configmap mymoviesconf --from-literal MONGO_CONNECTION=mongodb://mongo:27017 --from-literal DATABASE_NAME=movie-service --from-literal PORT=3000
+        sleep 5
+
+        oc project cinema-stage
+        sleep 10
+        oc create configmap mycinemaconf --from-literal MONGO_CONNECTION=mongodb://mongo:27017 --from-literal DATABASE_NAME=cinema-catalog-service --from-literal PORT=3001
+        sleep 5
+        oc create configmap mymoviesconf --from-literal MONGO_CONNECTION=mongodb://mongo:27017 --from-literal DATABASE_NAME=movie-service --from-literal PORT=3000
+        sleep 5
+
+  - name: Permissão de Acesso entre Projetos
+    shell: |
+        oc policy add-role-to-user edit system:serviceaccount:cinema-ci-cd:jenkins -n cinema-dev
+        sleep 5
+        oc policy add-role-to-user edit system:serviceaccount:cinema-ci-cd:jenkins -n cinema-stage
+        sleep 5
+        oc policy add-role-to-user edit system:serviceaccount:cinema-ci-cd:jenkins -n abu-common
+        sleep 5
+
+  - name: Build da Aplicação
+    shell: |
+        oc project cinema-dev
+        sleep 10
+        oc create -f cinema-catalog-service/src/custom-pipeline-bc.json
+        sleep 5
+        oc start-build custom-pipeline
+        sleep 5
+
+  - name: Fim da Implantação
+    shell: echo "<<< Fim >>>"

@@ -1,0 +1,3 @@
+Executando Ansible
+
+ansible-playbook -c local -i hosts ansible_openshift.yml
